@@ -1,0 +1,103 @@
+<html lang="en">
+
+    <head>
+
+        <meta charset="UTF-8">
+        <title>OmniDrive</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://bootswatch.com/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+        <style>
+            .bs-docs-section {
+                margin-top: 100px;
+                margin-left: 15%;
+                margin-right: 15%;
+                max-width: 1000px;
+            }
+        </style>
+
+        <script>
+            $(function() {
+                setInterval(fetchFiles, 5000); // continuously fetch files from manifest
+            });
+
+            function fetchFiles() {
+                $.get('files', function(data) {
+                    if (!data.hasOwnProperty("error")) {
+                        buildTableFromFiles(data);
+                    }
+                });
+            }
+
+            function buildTableFromFiles(data) {
+                clearTableBody();
+                for (var path in data) {
+                    var value = data[path];
+                    var cloud = value[0];
+                    var size = value[1];
+                    $("#files_table_body")
+                            .append(
+                            "<tr>" +
+                            "<td>" + path + "</td>" +
+                            "<td>" + size + "</td>" +
+                            "<td>" + cloud + "</td>" +
+                            "</tr>");
+                }
+            }
+
+            function clearTableBody() {
+                $("#files_table_body").remove();
+                $("#files_table").append("<tbody id='files_table_body'></tbody>");
+            }
+        </script>
+
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a href="../" class="navbar-brand">OmniDrive</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bs-docs-section">
+
+            <div class="row" align="center">
+                <div class="col-lg-12">
+                    <div class="bs-component">
+                        <table class="table table-striped table-hover" id="files_table">
+                            <thead>
+                                <tr>
+                                    <th>Path</th>
+                                    <th>Size</th>
+                                    <th>Cloud</th>
+                                </tr>
+                            </thead>
+                            <tbody id="files_table_body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="row bs-docs-section" style="margin-bottom: 20px;">
+                <div class="col-lg-12">
+                    <ul class="list-unstyled">
+                        <li class="pull-right"><a href="#top">Back to top</a></li>
+                        <li><p>&copy; All rights reserved to 'OmniDrive' 2015.</p></li>
+                    </ul>
+                </div>
+            </div>
+
+        </footer>
+
+    </body>
+
+</html>
